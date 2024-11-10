@@ -1,14 +1,22 @@
 #include <stdio.h>
 
 //RA, RB, and result are global variables
-char RA = 0; 
-char RB = 0; 
-char result = 0; 
+// int RA = 0; 
+// int RB = 0; 
+//int result = 0; 
 
-char alu(char S) {
+int alu(char S , int RA, int RB, int *carry) {
+    int result = 0; 
     if (S == 0) {
         result = RA + RB; // Perform addition
-    } else {
+        if (result > 15){
+            result -= 16;
+            carry = 1;
+        }
+        else {
+            carry = 0;
+        }
+    } else if (S == 1) {
         result = RA - RB; // Perform subtraction
     }
     return result; // Return the result

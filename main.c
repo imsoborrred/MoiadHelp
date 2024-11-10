@@ -2,12 +2,20 @@
 #include "assembler.h"
 #include "decoder.h"
 #include "loader.h"
+
+int RA = 0;
+int RB = 0;
+int carry = 0;
+int jumpcarry = 0;
+int sum = 0;
 char J;
 char C;
 char D1;
 char D0;
 char Sreq;
 char S;
+char imm1;
+char imm0;
 
 int main() {
     // Assemble the file
@@ -24,7 +32,10 @@ int main() {
         printf("\nExecuting instruction at PC=%d\n", PC);
 
         // Decode the instruction
-        decodeInstruction(instruction);
+        decodeInstruction(instruction, &J , &C, &D1 , &D0 , &Sreq, &S , &imm1 ,&imm0);
+        sum = alu(S , RA, RB,  &jumpcarry);
+
+
 
         // Increment the program counter
         PC++;
