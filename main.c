@@ -2,12 +2,18 @@
 #include "assembler.h"
 #include "decoder.h"
 #include "loader.h"
+#include "alu.h"
+#include "immediate.h"
+#include "mux.h"
+#include "jump.h"
 
 int RA = 0;
 int RB = 0;
+int R0 = 0;
 int carry = 0;
 int jumpcarry = 0;
 int sum = 0;
+int immAll = 0;
 char J;
 char C;
 char D1;
@@ -34,8 +40,10 @@ int main() {
         // Decode the instruction
         decodeInstruction(instruction, &J , &C, &D1 , &D0 , &Sreq, &S , &imm1 ,&imm0);
         sum = alu(S , RA, RB,  &jumpcarry);
-
-
+        immAll = immediate(S,imm1,imm0);
+        mux(D1, D0, Sreq, immAll, sum, &RA, &RB, &R0);
+        PC = jump(J, C, carry, immAll, PC);
+        carry = jumpcarry;
 
         // Increment the program counter
         PC++;
